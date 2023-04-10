@@ -6,7 +6,23 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        StreamReader a = new StreamReader("D:/VSWorks/laba10/wanimals.txt");
+        StreamReader a;
+        try
+        {
+            a = new StreamReader("D:/VSWorks/laba10/wanimalsss.txt");
+        }
+        catch (FileNotFoundException ex)
+        {
+            Console.WriteLine($"Ошибка! Файл не найден по указанному пути: { ex.Message}");
+        }
+        finally { a = new StreamReader("D:/VSWorks/laba10/wanimals.txt"); }
+        switch (a)
+        {
+            case (null):
+                throw new Exception("Файл пуст!");
+            //case ()
+        }
+        
         int n = 0;
         List<WaterAnimals> oceanarray = new List<WaterAnimals>();
         while (!a.EndOfStream)
@@ -16,18 +32,26 @@ internal class Program
                 oceanarray.Add(new BullShark(read[1], int.Parse(read[2])));
             if (read[0] == "Д" || read[0] == "д")
                 oceanarray.Add(new CommersonDolphin(read[1], int.Parse(read[2])));
-            //Console.WriteLine(oceanarray[oceanarray.Count - 1]);
             n++;
         }
         a.Close();
+        void ProverkaSytosty()
+        {
+        for (int i = 0; i < n; i++)
+            if (oceanarray[i].Sytost != true)
+                throw new OguzkiException("Все животные голодны!");
+        }
+        void VseobsheeKormlenie()
+        {
+        for (int i = 0; i < n; i++)
+        {
+            oceanarray[i].Kormlenie();
+            Console.WriteLine(oceanarray[i].AllInfo());
+        }
+        }
         try
         {
-            oceanarray[2].Kormlenie();
-            if (oceanarray[2].Sytost == true)
-            {
-                for (int i = 0; i < n; i++)
-                    if (oceanarray[i].Sytost != true || oceanarray[2].Sytost == true) throw new OguzkiException("Щас папочка всех накормит!");
-            }
+            ProverkaSytosty();
         } 
         catch(OguzkiException ogr)
         {
@@ -35,11 +59,7 @@ internal class Program
         }
         finally
         {
-            for (int i = 0; i < n; i++)
-            {
-                oceanarray[i].Kormlenie();
-                Console.WriteLine(oceanarray[i].AllInfo());
-            }
+            VseobsheeKormlenie();
         }
         
     }
