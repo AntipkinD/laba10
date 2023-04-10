@@ -20,10 +20,27 @@ internal class Program
             n++;
         }
         a.Close();
-        for (int i = 0; i < n; i++)
+        try
         {
-            if (i % 2 == 0) oceanarray[i].Kormlenie();
-            Console.WriteLine(oceanarray[i].AllInfo());
+            oceanarray[2].Kormlenie();
+            if (oceanarray[2].Sytost == true)
+            {
+                for (int i = 0; i < n; i++)
+                    if (oceanarray[i].Sytost != true || oceanarray[2].Sytost == true) throw new OguzkiException("Щас папочка всех накормит!");
+            }
+        } 
+        catch(OguzkiException ogr)
+        {
+            Console.WriteLine(ogr.Message);
         }
+        finally
+        {
+            for (int i = 0; i < n; i++)
+            {
+                oceanarray[i].Kormlenie();
+                Console.WriteLine(oceanarray[i].AllInfo());
+            }
+        }
+        
     }
 }
