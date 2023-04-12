@@ -7,22 +7,7 @@ internal class Program
     private static void Main(string[] args)
     {
         StreamReader a;
-        try
-        {
-            a = new StreamReader("D:/VSWorks/laba10/wanimalsss.txt");
-        }
-        catch (FileNotFoundException ex)
-        {
-            Console.WriteLine($"Ошибка! Файл не найден по указанному пути: { ex.Message}");
-        }
-        finally { a = new StreamReader("D:/VSWorks/laba10/wanimals.txt"); }
-        switch (a)
-        {
-            case (null):
-                throw new Exception("Файл пуст!");
-            //case ()
-        }
-        
+        a = new StreamReader("D:/VSWorks/laba10/wanimals.txt");
         int n = 0;
         List<WaterAnimals> oceanarray = new List<WaterAnimals>();
         while (!a.EndOfStream)
@@ -35,11 +20,30 @@ internal class Program
             n++;
         }
         a.Close();
+        try
+        {
+            a = new StreamReader("D:/VSWorks/laba10/wanimalsss.txt");
+            switch (a)
+            {
+                case (null):
+                    throw new Exception("Файл пуст!");
+            }
+            ProverkaSytosty();
+        }
+        catch (FileNotFoundException ex)
+        {
+            Console.WriteLine($"Ошибка! Файл не найден по указанному пути: {ex.Message}");
+        }
+        catch (OguzkiException ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        finally { VseobsheeKormlenie(); }
         void ProverkaSytosty()
         {
-        for (int i = 0; i < n; i++)
-            if (oceanarray[i].Sytost != true)
-                throw new OguzkiException("Все животные голодны!");
+            for (int i = 0; i < n; i++)
+                if (oceanarray[i].Sytost != true)
+                    throw new OguzkiException("Исключение! Все животные голодны!");
         }
         void VseobsheeKormlenie()
         {
@@ -49,18 +53,5 @@ internal class Program
             Console.WriteLine(oceanarray[i].AllInfo());
         }
         }
-        try
-        {
-            ProverkaSytosty();
-        } 
-        catch(OguzkiException ogr)
-        {
-            Console.WriteLine(ogr.Message);
-        }
-        finally
-        {
-            VseobsheeKormlenie();
-        }
-        
     }
 }
