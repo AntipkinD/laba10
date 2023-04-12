@@ -23,11 +23,6 @@ internal class Program
         try
         {
             a = new StreamReader("D:/VSWorks/laba10/wanimalsss.txt");
-            switch (a)
-            {
-                case (null):
-                    throw new Exception("Файл пуст!");
-            }
             ProverkaSytosty();
         }
         catch (FileNotFoundException ex)
